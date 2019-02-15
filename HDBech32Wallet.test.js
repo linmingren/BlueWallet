@@ -54,6 +54,31 @@ it('can create a Bech32 Segwit HD (BIP84)', async function() {
   assert.strictEqual(hd._getInternalAddressByIndex(hd.next_free_change_address_index), freeChangeAddress);
 });
 
+it.only('can fetch balance & transactions', async function() {
+  if (!process.env.HD_MNEMONIC) {
+    console.error('process.env.HD_MNEMONIC not set, skipped');
+    return;
+  }
+  jasmine.DEFAULT_TIMEOUT_INTERVAL = 90 * 1000;
+  let hd = new HDSegwitBech32Wallet()
+  hd.setSecret(process.env.HD_MNEMONIC);
+  assert.ok(hd.validateMnemonic());
+
+
+  assert.strictEqual(
+    'zpub6r7jhKKm7BAVx3b3nSnuadY1WnshZYkhK8gKFoRLwK9rF3Mzv28BrGcCGA3ugGtawi1WLb2vyjQAX9ZTDGU5gNk2bLdTc3iEXr6tzR1ipNP',
+    hd.getXpub(),
+  );
+
+  assert.strictEqual(hd._getExternalAddressByIndex(0), 'bc1qvd6w54sydc08z3802svkxr7297ez7cusd6266p');
+  assert.strictEqual(hd._getExternalAddressByIndex(1), 'bc1qt4t9xl2gmjvxgmp5gev6m8e6s9c85979ta7jeh');
+  assert.strictEqual(hd._getInternalAddressByIndex(0), 'bc1qcg6e26vtzja0h8up5w2m7utex0fsu4v0e0e7uy');
+  assert.strictEqual(hd._getInternalAddressByIndex(1), 'bc1qwp58x4c9e5cplsnw5096qzdkae036ug7a34x3r');
+
+
+
+})
+
 it.skip('Segwit HD (BIP49) can generate addressess only via ypub', function() {
   let ypub = 'ypub6WhHmKBmHNjcrUVNCa3sXduH9yxutMipDcwiKW31vWjcMbfhQHjXdyx4rqXbEtVgzdbhFJ5mZJWmfWwnP4Vjzx97admTUYKQt6b9D7jjSCp';
   let hd = new HDSegwitP2SHWallet();
