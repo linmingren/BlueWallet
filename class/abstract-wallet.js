@@ -41,6 +41,10 @@ export class AbstractWallet {
     return this.label;
   }
 
+  /**
+   *
+   * @returns {number} Available to spend amount, float, in btc (not sats)
+   */
   getBalance() {
     return this.balance;
   }

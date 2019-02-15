@@ -5,7 +5,7 @@ import bip39 from 'bip39';
 import BigNumber from 'bignumber.js';
 import b58 from 'bs58check';
 import signer from '../models/signer';
-import { WatchOnlyWallet } from './watch-only-wallet';
+const BlueElectrum = require('../BlueElectrum');
 
 const { RNRandomBytes } = NativeModules;
 
@@ -44,6 +44,13 @@ function _nodeToBech32SegwitAddress(hdNode) {
 export class HDSegwitBech32Wallet extends AbstractHDWallet {
   static type = 'HDsegwitBech32';
   static typeReadable = 'HD SegWit (BIP84 Bech32 Native)';
+
+  /**
+   * @inheritDoc
+   */
+  getBalance() {
+    return new BigNumber(this.balance_satoshis).dividedBy(100000000).toNumber();
+  }
 
   allowSend() {
     return true;
@@ -189,16 +196,13 @@ export class HDSegwitBech32Wallet extends AbstractHDWallet {
     // looking for free external address
     let freeAddress = '';
     let c;
-    for (c = 0; c < Math.max(5, this.usedAddresses.length); c++) {
+    for (c = 0; c < Math.max(50, this.usedAddresses.length); c++) {
       if (this.next_free_address_index + c < 0) continue;
       let address = this._getExternalAddressByIndex(this.next_free_address_index + c);
-      this.external_addresses_cache[this.next_free_address_index + c] = address; // updating cache just for any case
-      let WatchWallet = new WatchOnlyWallet();
-      WatchWallet.setSecret(address);
-      await WatchWallet.fetchTransactions();
-      if (WatchWallet.transactions.length === 0) {
+      let txs = await BlueElectrum.getTransactionsByAddress(address);
+      if (txs.length === 0) {
         // found free address
-        freeAddress = WatchWallet.getAddress();
+        freeAddress = address;
         this.next_free_address_index += c; // now points to _this one_
         break;
       }
@@ -227,13 +231,10 @@ export class HDSegwitBech32Wallet extends AbstractHDWallet {
     for (c = 0; c < Math.max(5, this.usedAddresses.length); c++) {
       if (this.next_free_change_address_index + c < 0) continue;
       let address = this._getInternalAddressByIndex(this.next_free_change_address_index + c);
-      this.internal_addresses_cache[this.next_free_change_address_index + c] = address; // updating cache just for any case
-      let WatchWallet = new WatchOnlyWallet();
-      WatchWallet.setSecret(address);
-      await WatchWallet.fetchTransactions();
-      if (WatchWallet.transactions.length === 0) {
+      let txs = await BlueElectrum.getTransactionsByAddress(address);
+      if (txs.length === 0) {
         // found free address
-        freeAddress = WatchWallet.getAddress();
+        freeAddress = address;
         this.next_free_change_address_index += c; // now points to _this one_
         break;
       }

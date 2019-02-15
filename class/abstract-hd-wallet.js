@@ -19,6 +19,7 @@ export class AbstractHDWallet extends LegacyWallet {
     this._xpub = ''; // cache
     this.usedAddresses = [];
     this._address_to_wif_cache = {};
+    this.balance_satoshis = 0;
   }
 
   generate() {
@@ -345,55 +346,60 @@ export class AbstractHDWallet extends LegacyWallet {
     throw new Error('Not implemented');
   }
 
+  async _binarySearchNextFreeAddresses() {
+    let that = this;
+
+    // refactor me
+    // eslint-disable-next-line
+    async function binarySearchIterationForInternalAddress(index, maxUsedIndex = 0, minUnusedIndex = 100500100, depth = 0) {
+      if (depth >= 20) return maxUsedIndex + 1; // fail
+      let txs = await BlueElectrum.getTransactionsByAddress(that._getInternalAddressByIndex(index));
+      if (txs.length === 0) {
+        if (index === 0) return 0;
+        minUnusedIndex = Math.min(minUnusedIndex, index); // set
+        index = Math.floor((index - maxUsedIndex) / 2 + maxUsedIndex);
+      } else {
+        maxUsedIndex = Math.max(maxUsedIndex, index); // set
+        let txs2 = await BlueElectrum.getTransactionsByAddress(that._getInternalAddressByIndex(index + 1));
+        if (txs2.length === 0) return index + 1; // thats our next free address
+
+        index = Math.round((minUnusedIndex - index) / 2 + index);
+      }
+
+      return binarySearchIterationForInternalAddress(index, maxUsedIndex, minUnusedIndex, depth + 1);
+    }
+
+    this.next_free_change_address_index = await binarySearchIterationForInternalAddress(100);
+
+    // refactor me
+    // eslint-disable-next-line
+    async function binarySearchIterationForExternalAddress(index, maxUsedIndex = 0, minUnusedIndex = 100500100, depth = 0) {
+      if (depth >= 20) return maxUsedIndex + 1; // fail
+      let txs = await BlueElectrum.getTransactionsByAddress(that._getExternalAddressByIndex(index));
+      if (txs.length === 0) {
+        if (index === 0) return 0;
+        minUnusedIndex = Math.min(minUnusedIndex, index); // set
+        index = Math.floor((index - maxUsedIndex) / 2 + maxUsedIndex);
+      } else {
+        maxUsedIndex = Math.max(maxUsedIndex, index); // set
+        let txs2 = await BlueElectrum.getTransactionsByAddress(that._getExternalAddressByIndex(index + 1));
+        if (txs2.length === 0) return index + 1; // thats our next free address
+
+        index = Math.round((minUnusedIndex - index) / 2 + index);
+      }
+
+      return binarySearchIterationForExternalAddress(index, maxUsedIndex, minUnusedIndex, depth + 1);
+    }
+
+    this.next_free_address_index = await binarySearchIterationForExternalAddress(100);
+  }
+
   async fetchBalance() {
     try {
-      // doing binary search for last used externa address
-
-      let that = this;
-
-      // refactor me
-      // eslint-disable-next-line
-      async function binarySearchIterationForInternalAddress(index, maxUsedIndex = 0, minUnusedIndex = 100500100, depth = 0) {
-        if (depth >= 20) return maxUsedIndex + 1; // fail
-        let txs = await BlueElectrum.getTransactionsByAddress(that._getInternalAddressByIndex(index));
-        if (txs.length === 0) {
-          if (index === 0) return 0;
-          minUnusedIndex = Math.min(minUnusedIndex, index); // set
-          index = Math.floor((index - maxUsedIndex) / 2 + maxUsedIndex);
-        } else {
-          maxUsedIndex = Math.max(maxUsedIndex, index); // set
-          let txs2 = await BlueElectrum.getTransactionsByAddress(that._getInternalAddressByIndex(index + 1));
-          if (txs2.length === 0) return index + 1; // thats our next free address
-
-          index = Math.round((minUnusedIndex - index) / 2 + index);
-        }
-
-        return binarySearchIterationForInternalAddress(index, maxUsedIndex, minUnusedIndex, depth + 1);
+      if (!this.next_free_change_address_index && !this.next_free_address_index) {
+        // if those pointers are empty, its quite likely that the wallet is being initialized for the first time
+        await this._binarySearchNextFreeAddresses();
       }
-
-      this.next_free_change_address_index = await binarySearchIterationForInternalAddress(100);
-
-      // refactor me
-      // eslint-disable-next-line
-      async function binarySearchIterationForExternalAddress(index, maxUsedIndex = 0, minUnusedIndex = 100500100, depth = 0) {
-        if (depth >= 20) return maxUsedIndex + 1; // fail
-        let txs = await BlueElectrum.getTransactionsByAddress(that._getExternalAddressByIndex(index));
-        if (txs.length === 0) {
-          if (index === 0) return 0;
-          minUnusedIndex = Math.min(minUnusedIndex, index); // set
-          index = Math.floor((index - maxUsedIndex) / 2 + maxUsedIndex);
-        } else {
-          maxUsedIndex = Math.max(maxUsedIndex, index); // set
-          let txs2 = await BlueElectrum.getTransactionsByAddress(that._getExternalAddressByIndex(index + 1));
-          if (txs2.length === 0) return index + 1; // thats our next free address
-
-          index = Math.round((minUnusedIndex - index) / 2 + index);
-        }
-
-        return binarySearchIterationForExternalAddress(index, maxUsedIndex, minUnusedIndex, depth + 1);
-      }
-
-      this.next_free_address_index = await binarySearchIterationForExternalAddress(100);
 
       this.balance = 0;
       this.unconfirmed_balance = 0;
@@ -409,6 +415,7 @@ export class AbstractHDWallet extends LegacyWallet {
 
       // finally fetching balance
       let balance = await BlueElectrum.multiGetBalanceByAddress(this.usedAddresses);
+      this.balance_satoshis = +balance.balance; // gona be used in dependent class
       this.balance = new BigNumber(balance.balance).dividedBy(100000000).toNumber();
       this.unconfirmed_balance = new BigNumber(balance.unconfirmed_balance).dividedBy(100000000).toNumber();
       this._lastBalanceFetch = +new Date();
