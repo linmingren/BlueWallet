@@ -16,13 +16,20 @@ import {
   Text,
 } from 'react-native';
 import { Icon } from 'react-native-elements';
-import { BlueNavigationStyle, BlueButton, BlueBitcoinAmount, BlueAddressInput } from '../../BlueComponents';
+import {
+  BlueNavigationStyle,
+  BlueButton,
+  BlueBitcoinAmount,
+  BlueAddressInput,
+  BlueDismissKeyboardInputAccessory,
+  BlueLoading,
+} from '../../BlueComponents';
 import PropTypes from 'prop-types';
 import Modal from 'react-native-modal';
 import NetworkTransactionFees, { NetworkTransactionFee } from '../../models/networkTransactionFees';
 import BitcoinBIP70TransactionDecode from '../../bip70/bip70';
 import { BitcoinUnit } from '../../models/bitcoinUnits';
-import { HDLegacyP2PKHWallet, HDSegwitP2SHWallet } from '../../class';
+import { HDLegacyP2PKHWallet, HDSegwitP2SHWallet, LightningCustodianWallet } from '../../class';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 const bip21 = require('bip21');
 let BigNumber = require('bignumber.js');
@@ -39,6 +46,8 @@ export default class SendDetails extends Component {
     title: loc.send.header,
   });
 
+  state = { isLoading: true, fromWallet: undefined };
+
   constructor(props) {
     super(props);
     console.log('props.navigation.state.params=', props.navigation.state.params);
@@ -52,36 +61,43 @@ export default class SendDetails extends Component {
     if (props.navigation.state.params) fromSecret = props.navigation.state.params.fromSecret;
     let fromWallet = null;
 
-    const wallets = BlueApp.getWallets();
+    const wallets = BlueApp.getWallets().filter(wallet => wallet.type !== LightningCustodianWallet.type);
 
-    for (let w of wallets) {
-      if (w.getSecret() === fromSecret) {
-        fromWallet = w;
-        break;
+    if (wallets.length === 0) {
+      alert('Before creating a transaction, you must first add a Bitcoin wallet.');
+      return props.navigation.goBack(null);
+    } else {
+      if (!fromWallet && wallets.length > 0) {
+        fromWallet = wallets[0];
+        fromAddress = fromWallet.getAddress();
+        fromSecret = fromWallet.getSecret();
+      }
+      if (fromWallet === null) return props.navigation.goBack(null);
+      for (let w of wallets) {
+        if (w.getSecret() === fromSecret) {
+          fromWallet = w;
+          break;
+        }
+
+        if (w.getAddress() === fromAddress) {
+          fromWallet = w;
+        }
       }
 
-      if (w.getAddress() === fromAddress) {
-        fromWallet = w;
-      }
+      this.state = {
+        isFeeSelectionModalVisible: false,
+        fromAddress,
+        fromWallet,
+        fromSecret,
+        address,
+        memo,
+        fee: 1,
+        networkTransactionFees: new NetworkTransactionFee(1, 1, 1),
+        feeSliderValue: 1,
+        bip70TransactionExpiration: null,
+        renderWalletSelectionButtonHidden: false,
+      };
     }
-
-    // fallback to first wallet if it exists
-    if (!fromWallet && wallets[0]) fromWallet = wallets[0];
-
-    this.state = {
-      isFeeSelectionModalVisible: false,
-      fromAddress,
-      fromWallet,
-      fromSecret,
-      isLoading: false,
-      address,
-      memo,
-      fee: 1,
-      networkTransactionFees: new NetworkTransactionFee(1, 1, 1),
-      feeSliderValue: 1,
-      bip70TransactionExpiration: null,
-      renderWalletSelectionButtonHidden: false,
-    };
   }
 
   /**
@@ -267,11 +283,19 @@ export default class SendDetails extends Component {
             Keyboard.dismiss();
             BitcoinBIP70TransactionDecode.decode(text)
               .then(response => {
+                let networkTransactionFees = this.state.networkTransactionFees;
+                if (response.fee > networkTransactionFees.fastestFee) {
+                  networkTransactionFees.fastestFee = response.fee;
+                } else {
+                  networkTransactionFees.halfHourFee = response.fee;
+                }
                 this.setState({
                   address: response.address,
                   amount: loc.formatBalanceWithoutSuffix(response.amount, BitcoinUnit.BTC, false),
                   memo: response.memo,
-                  fee: response.fee,
+                  networkTransactionFees,
+                  fee: networkTransactionFees.fastestFee.toFixed(0),
+                  feeSliderValue: networkTransactionFees.fastestFee.toFixed(0),
                   bip70TransactionExpiration: response.expires,
                   isLoading: false,
                 });
@@ -458,6 +482,7 @@ export default class SendDetails extends Component {
                 placeholderTextColor="#37c0a1"
                 placeholder={this.state.networkTransactionFees.halfHourFee.toString()}
                 style={{ fontWeight: '600', color: '#37c0a1', marginBottom: 0, marginRight: 4, textAlign: 'right', fontSize: 36 }}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
               <Text
                 style={{
@@ -537,10 +562,10 @@ export default class SendDetails extends Component {
   };
 
   render() {
-    if (!this.state.fromWallet.getAddress) {
+    if (this.state.isLoading || typeof this.state.fromWallet === 'undefined') {
       return (
         <View style={{ flex: 1, paddingTop: 20 }}>
-          <Text>System error: Source wallet not found (this should never happen)</Text>
+          <BlueLoading />
         </View>
       );
     }
@@ -553,6 +578,7 @@ export default class SendDetails extends Component {
                 isLoading={this.state.isLoading}
                 amount={this.state.amount}
                 onChangeText={text => this.setState({ amount: text })}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
               <BlueAddressInput
                 onChangeText={text => {
@@ -574,6 +600,7 @@ export default class SendDetails extends Component {
                 onBarScanned={this.processAddressData}
                 address={this.state.address}
                 isLoading={this.state.isLoading}
+                inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
               />
               <View
                 hide={!this.state.showMemoRow}
@@ -600,6 +627,7 @@ export default class SendDetails extends Component {
                   style={{ flex: 1, marginHorizontal: 8, minHeight: 33 }}
                   editable={!this.state.isLoading}
                   onSubmitEditing={Keyboard.dismiss}
+                  inputAccessoryViewID={BlueDismissKeyboardInputAccessory.InputAccessoryViewID}
                 />
               </View>
               <TouchableOpacity
@@ -628,6 +656,7 @@ export default class SendDetails extends Component {
               {this.renderFeeSelectionModal()}
             </KeyboardAvoidingView>
           </View>
+          <BlueDismissKeyboardInputAccessory />
           {this.renderWalletSelectionButton()}
         </View>
       </TouchableWithoutFeedback>
@@ -665,6 +694,7 @@ const styles = StyleSheet.create({
 SendDetails.propTypes = {
   navigation: PropTypes.shape({
     pop: PropTypes.func,
+    goBack: PropTypes.func,
     navigate: PropTypes.func,
     getParam: PropTypes.func,
     state: PropTypes.shape({
