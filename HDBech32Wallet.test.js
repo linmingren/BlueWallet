@@ -55,7 +55,7 @@ describe('Bech32 Segwit HD (BIP84)', () => {
     assert.strictEqual(hd._getInternalAddressByIndex(hd.next_free_change_address_index), freeChangeAddress);
   });
 
-  it.only('can fetch balance & transactions', async function() {
+  it.only('can fetch balance', async function() {
     if (!process.env.HD_MNEMONIC) {
       console.error('process.env.HD_MNEMONIC not set, skipped');
       return;
@@ -91,33 +91,55 @@ describe('Bech32 Segwit HD (BIP84)', () => {
     assert.strictEqual(hd.next_free_address_index, 2);
     assert.strictEqual(hd.next_free_change_address_index, 2);
   });
-});
 
-it.skip('Segwit HD (BIP49) can generate addressess only via ypub', function() {
-  let ypub = 'ypub6WhHmKBmHNjcrUVNCa3sXduH9yxutMipDcwiKW31vWjcMbfhQHjXdyx4rqXbEtVgzdbhFJ5mZJWmfWwnP4Vjzx97admTUYKQt6b9D7jjSCp';
-  let hd = new HDSegwitP2SHWallet();
-  hd._xpub = ypub;
-  assert.strictEqual('3GcKN7q7gZuZ8eHygAhHrvPa5zZbG5Q1rK', hd._getExternalAddressByIndex(0));
-  assert.strictEqual('35p5LwCAE7mH2css7onyQ1VuS1jgWtQ4U3', hd._getExternalAddressByIndex(1));
-  assert.strictEqual('32yn5CdevZQLk3ckuZuA8fEKBco8mEkLei', hd._getInternalAddressByIndex(0));
-});
-
-it.skip('can generate Segwit HD (BIP49)', async () => {
-  let hd = new HDSegwitP2SHWallet();
-  let hashmap = {};
-  for (let c = 0; c < 1000; c++) {
-    await hd.generate();
-    let secret = hd.getSecret();
-    if (hashmap[secret]) {
-      throw new Error('Duplicate secret generated!');
+  it.skip('can fetch transactions', async function() {
+    if (!process.env.HD_MNEMONIC) {
+      console.error('process.env.HD_MNEMONIC not set, skipped');
+      return;
     }
-    hashmap[secret] = 1;
-    assert.ok(secret.split(' ').length === 12 || secret.split(' ').length === 24);
-  }
+    jasmine.DEFAULT_TIMEOUT_INTERVAL = 90 * 1000;
+    let hd = new HDSegwitBech32Wallet();
+    hd.setSecret(process.env.HD_MNEMONIC);
+    assert.ok(hd.validateMnemonic());
 
-  let hd2 = new HDSegwitP2SHWallet();
-  hd2.setSecret(hd.getSecret());
-  assert.ok(hd2.validateMnemonic());
+    await hd.fetchTransactions();
+    assert.strictEqual(hd.getTransactions().length, 4);
+
+    for (let tx of hd.getTransactions()) {
+      assert.ok(tx.hash);
+      assert.strictEqual(tx.value, 50000);
+      assert.ok(tx.timestamp);
+      assert.ok(tx.confirmations > 1);
+    }
+  });
+
+  it.only('can generate addresses only via zpub', function() {
+    let zpub = 'zpub6rFR7y4Q2AijBEqTUquhVz398htDFrtymD9xYYfG1m4wAcvPhXNfE3EfH1r1ADqtfSdVCToUG868RvUUkgDKf31mGDtKsAYz2oz2AGutZYs';
+    let hd = new HDSegwitBech32Wallet();
+    hd._xpub = zpub;
+    assert.strictEqual(hd._getExternalAddressByIndex(0), 'bc1qcr8te4kr609gcawutmrza0j4xv80jy8z306fyu');
+    assert.strictEqual(hd._getExternalAddressByIndex(1), 'bc1qnjg0jd8228aq7egyzacy8cys3knf9xvrerkf9g');
+    assert.strictEqual(hd._getInternalAddressByIndex(0), 'bc1q8c6fshw2dlwun7ekn9qwf37cu2rn755upcp6el');
+    assert.ok(hd._getInternalAddressByIndex(0) !== hd._getInternalAddressByIndex(1));
+  });
+
+  it('can generate', async () => {
+    let hd = new HDSegwitBech32Wallet();
+    let hashmap = {};
+    for (let c = 0; c < 1000; c++) {
+      await hd.generate();
+      let secret = hd.getSecret();
+      if (hashmap[secret]) {
+        throw new Error('Duplicate secret generated!');
+      }
+      hashmap[secret] = 1;
+      assert.ok(secret.split(' ').length === 12 || secret.split(' ').length === 24);
+    }
+
+    let hd2 = new HDSegwitBech32Wallet();
+    hd2.setSecret(hd.getSecret());
+    assert.ok(hd2.validateMnemonic());
+  });
 });
 
 it.skip('HD (BIP49) can create TX', async () => {
@@ -192,52 +214,4 @@ it.skip('Segwit HD (BIP49) can fetch UTXO', async function() {
     hd.utxo[0].address &&
       (hd.utxo[0].address === '1Ez69SnzzmePmZX3WpEzMKTrcBF2gpNQ55' || hd.utxo[0].address === '1BiTCHeYzJNMxBLFCMkwYXNdFEdPJP53ZV'),
   );
-});
-
-it.skip('Segwit HD (BIP49) can fetch balance with many used addresses in hierarchy', async function() {
-  if (!process.env.HD_MNEMONIC_BIP49_MANY_TX) {
-    console.error('process.env.HD_MNEMONIC_BIP49_MANY_TX not set, skipped');
-    return;
-  }
-
-  jasmine.DEFAULT_TIMEOUT_INTERVAL = 90 * 1000;
-  let hd = new HDSegwitP2SHWallet();
-  hd.setSecret(process.env.HD_MNEMONIC_BIP49_MANY_TX);
-  assert.ok(hd.validateMnemonic());
-  let start = +new Date();
-  await hd.fetchBalance();
-  let end = +new Date();
-  const took = (end - start) / 1000;
-  took > 15 && console.warn('took', took, "sec to fetch huge HD wallet's balance");
-  assert.strictEqual(hd.getBalance(), 0.00051432);
-
-  await hd.fetchUtxo();
-  assert.ok(hd.utxo.length > 0);
-
-  await hd.fetchTransactions();
-  assert.strictEqual(hd.getTransactions().length, 107);
-});
-
-it.skip('can work with malformed mnemonic', () => {
-  let mnemonic =
-    'honey risk juice trip orient galaxy win situate shoot anchor bounce remind horse traffic exotic since escape mimic ramp skin judge owner topple erode';
-  let hd = new HDSegwitP2SHWallet();
-  hd.setSecret(mnemonic);
-  let seed1 = hd.getMnemonicToSeedHex();
-  assert.ok(hd.validateMnemonic());
-
-  mnemonic = 'hell';
-  hd = new HDSegwitP2SHWallet();
-  hd.setSecret(mnemonic);
-  assert.ok(!hd.validateMnemonic());
-
-  // now, malformed mnemonic
-
-  mnemonic =
-    '    honey  risk   juice    trip     orient      galaxy win !situate ;; shoot   ;;;   anchor Bounce remind\nhorse \n traffic exotic since escape mimic ramp skin judge owner topple erode ';
-  hd = new HDSegwitP2SHWallet();
-  hd.setSecret(mnemonic);
-  let seed2 = hd.getMnemonicToSeedHex();
-  assert.strictEqual(seed1, seed2);
-  assert.ok(hd.validateMnemonic());
 });
