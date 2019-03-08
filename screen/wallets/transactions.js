@@ -18,7 +18,7 @@ import PropTypes from 'prop-types';
 import { NavigationEvents } from 'react-navigation';
 import { BlueSendButtonIcon, BlueReceiveButtonIcon, BlueTransactionListItem } from '../../BlueComponents';
 import { Icon } from 'react-native-elements';
-import { BitcoinUnit } from '../../models/bitcoinUnits';
+import { BitcoinUnit, Chain } from '../../models/bitcoinUnits';
 import { LightningCustodianWallet } from '../../class';
 import WalletGradient from '../../class/walletGradient';
 import ToolTip from 'react-native-tooltip';
@@ -122,7 +122,7 @@ export default class WalletTransactions extends Component {
 
   isLightning() {
     let w = this.state.wallet;
-    if (w && w.type === LightningCustodianWallet.type) {
+    if (w && w.chain === Chain.OFFCHAIN) {
       return true;
     }
 
@@ -220,10 +220,7 @@ export default class WalletTransactions extends Component {
         style={{ padding: 15, minHeight: 140, justifyContent: 'center' }}
       >
         <Image
-          source={
-            (LightningCustodianWallet.type === this.state.wallet.type && require('../../img/lnd-shape.png')) ||
-            require('../../img/btc-shape.png')
-          }
+          source={(Chain.OFFCHAIN === this.state.wallet.chain && require('../../img/lnd-shape.png')) || require('../../img/btc-shape.png')}
           style={{
             width: 99,
             height: 94,
@@ -469,7 +466,7 @@ export default class WalletTransactions extends Component {
               return (
                 <BlueReceiveButtonIcon
                   onPress={() => {
-                    if (this.state.wallet.type === LightningCustodianWallet.type) {
+                    if (this.state.wallet.chain === Chain.OFFCHAIN) {
                       navigate('LNDCreateInvoice', { fromWallet: this.state.wallet });
                     } else {
                       navigate('ReceiveDetails', { address: this.state.wallet.getAddress(), secret: this.state.wallet.getSecret() });
@@ -485,7 +482,7 @@ export default class WalletTransactions extends Component {
               return (
                 <BlueSendButtonIcon
                   onPress={() => {
-                    if (this.state.wallet.type === LightningCustodianWallet.type) {
+                    if (this.state.wallet.chain === Chain.OFFCHAIN) {
                       navigate('ScanLndInvoice', { fromSecret: this.state.wallet.getSecret() });
                     } else {
                       navigate('SendDetails', {
