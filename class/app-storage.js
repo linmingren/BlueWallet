@@ -7,7 +7,6 @@ import {
   LegacyWallet,
   SegwitP2SHWallet,
   SegwitBech32Wallet,
-  ACINQStrikeLightningWallet,
 } from './';
 import { LightningCustodianWallet } from './lightning-custodian-wallet';
 let encryption = require('../encryption');
@@ -151,9 +150,6 @@ export class AppStorage {
             case HDLegacyBreadwalletWallet.type:
               unserializedWallet = HDLegacyBreadwalletWallet.fromJson(key);
               break;
-            case ACINQStrikeLightningWallet.type:
-              unserializedWallet = ACINQStrikeLightningWallet.fromJson(key);
-              break;
             case LightningCustodianWallet.type:
               /** @type {LightningCustodianWallet} */
               unserializedWallet = LightningCustodianWallet.fromJson(key);
@@ -163,12 +159,16 @@ export class AppStorage {
               } catch (Error) {
                 console.warn(Error);
               }
-              if (lndhub || unserializedWallet.baseURI.length <= 0) {
-                console.log('using', lndhub, 'for lndhub wallet');
+
+              if (unserializedWallet.baseURI) {
+                unserializedWallet.setBaseURI(unserializedWallet.baseURI); // not really necessary, just for the sake of readability
+                console.log('using saved uri for for ln wallet:', unserializedWallet.baseURI);
+              } else if (lndhub) {
+                console.log('using wallet-wide settings ', lndhub, 'for ln wallet');
                 unserializedWallet.setBaseURI(lndhub);
               } else {
-                unserializedWallet.setBaseURI(unserializedWallet.baseURI);
-                console.log('using default uri for for lndhub wallet:', unserializedWallet.baseURI);
+                console.log('using default', LightningCustodianWallet.defaultBaseUri, 'for ln wallet');
+                unserializedWallet.setBaseURI(LightningCustodianWallet.defaultBaseUri);
               }
               unserializedWallet.init();
               break;
