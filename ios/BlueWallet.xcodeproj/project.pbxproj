@@ -65,14 +65,13 @@
 		B4DAAEB92230BFFC0069E388 /* InterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DAAEB82230BFFC0069E388 /* InterfaceController.swift */; };
 		B4DAAEBB2230BFFC0069E388 /* ExtensionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DAAEBA2230BFFC0069E388 /* ExtensionDelegate.swift */; };
 		B4DAAEBD2230BFFC0069E388 /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DAAEBC2230BFFC0069E388 /* NotificationController.swift */; };
-		B4DAAEBF2230BFFC0069E388 /* ComplicationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4DAAEBE2230BFFC0069E388 /* ComplicationController.swift */; };
 		B4DAAEC12230BFFD0069E388 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4DAAEC02230BFFD0069E388 /* Assets.xcassets */; };
 		B4DAAEC62230BFFD0069E388 /* BlueWalletWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = B4DAAEA72230BFFA0069E388 /* BlueWalletWatch.app */; };
 		B4E71B2322378C6200766E13 /* ReceiveInterfaceController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E71B2222378C6200766E13 /* ReceiveInterfaceController.swift */; };
 		B4E71B652238B83B00766E13 /* Wallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E71B642238B83B00766E13 /* Wallet.swift */; };
 		B4E71B89223A351900766E13 /* Transaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E71B88223A351900766E13 /* Transaction.swift */; };
 		B4E71BCB223A385600766E13 /* TransactionTableRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E71BCA223A385600766E13 /* TransactionTableRow.swift */; };
-		B4E792C0223E4AAA00AD5326 /* KeychainSwiftDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E792BF223E4AAA00AD5326 /* KeychainSwiftDistrib.swift */; };
+		B4E79367223E4B3200AD5326 /* KeychainSwiftDistrib.swift in Sources */ = {isa = PBXBuildFile; fileRef = B4E79366223E4B3200AD5326 /* KeychainSwiftDistrib.swift */; };
 		C1056BF235EE4E23AAF21975 /* libRCTQRCodeLocalImage.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B642AFB13483418CAB6FF25E /* libRCTQRCodeLocalImage.a */; };
 		C10C13E4CC4445C5861B1A3A /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD7977067E1A496F94D8B1B7 /* libRNDeviceInfo.a */; };
 		C41EC263DBE649299C99B9A5 /* libRNRate.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BBA99996E6FA4B49ACE0BEFA /* libRNRate.a */; };
@@ -686,7 +685,6 @@
 		B4DAAEB82230BFFC0069E388 /* InterfaceController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InterfaceController.swift; sourceTree = "<group>"; };
 		B4DAAEBA2230BFFC0069E388 /* ExtensionDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtensionDelegate.swift; sourceTree = "<group>"; };
 		B4DAAEBC2230BFFC0069E388 /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
-		B4DAAEBE2230BFFC0069E388 /* ComplicationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComplicationController.swift; sourceTree = "<group>"; };
 		B4DAAEC02230BFFD0069E388 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B4DAAEC22230BFFD0069E388 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B4DAAEC32230BFFD0069E388 /* PushNotificationPayload.apns */ = {isa = PBXFileReference; lastKnownFileType = text; path = PushNotificationPayload.apns; sourceTree = "<group>"; };
@@ -694,7 +692,7 @@
 		B4E71B642238B83B00766E13 /* Wallet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wallet.swift; sourceTree = "<group>"; };
 		B4E71B88223A351900766E13 /* Transaction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Transaction.swift; sourceTree = "<group>"; };
 		B4E71BCA223A385600766E13 /* TransactionTableRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransactionTableRow.swift; sourceTree = "<group>"; };
-		B4E792BF223E4AAA00AD5326 /* KeychainSwiftDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftDistrib.swift; sourceTree = SOURCE_ROOT; };
+		B4E79366223E4B3200AD5326 /* KeychainSwiftDistrib.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeychainSwiftDistrib.swift; sourceTree = SOURCE_ROOT; };
 		B5E77FEF413646E685D5041B /* RNWatch.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNWatch.xcodeproj; path = "../node_modules/react-native-watch-connectivity/RNWatch.xcodeproj"; sourceTree = "<group>"; };
 		B642AFB13483418CAB6FF25E /* libRCTQRCodeLocalImage.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTQRCodeLocalImage.a; sourceTree = "<group>"; };
 		B9D9B3A7B2CB4255876B67AF /* libz.tbd */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -1297,13 +1295,12 @@
 		B4DAAEB72230BFFC0069E388 /* BlueWalletWatch Extension */ = {
 			isa = PBXGroup;
 			children = (
-				B4E792BF223E4AAA00AD5326 /* KeychainSwiftDistrib.swift */,
+				B4E79366223E4B3200AD5326 /* KeychainSwiftDistrib.swift */,
 				B439DAF72234E57D00C85180 /* Objects */,
 				B4DAAEB82230BFFC0069E388 /* InterfaceController.swift */,
 				B4E71B2222378C6200766E13 /* ReceiveInterfaceController.swift */,
 				B4DAAEBA2230BFFC0069E388 /* ExtensionDelegate.swift */,
 				B4DAAEBC2230BFFC0069E388 /* NotificationController.swift */,
-				B4DAAEBE2230BFFC0069E388 /* ComplicationController.swift */,
 				B4DAAEC02230BFFD0069E388 /* Assets.xcassets */,
 				B4DAAEC22230BFFD0069E388 /* Info.plist */,
 				B4DAAEC32230BFFD0069E388 /* PushNotificationPayload.apns */,
@@ -2257,15 +2254,14 @@
 			files = (
 				B439DB392234E59F00C85180 /* WalletInformation.swift in Sources */,
 				B4DAAEBD2230BFFC0069E388 /* NotificationController.swift in Sources */,
-				B4DAAEBF2230BFFC0069E388 /* ComplicationController.swift in Sources */,
 				B439DB3E22363BE400C85180 /* WalletDetailsInterfaceController.swift in Sources */,
 				B4E71B89223A351900766E13 /* Transaction.swift in Sources */,
 				B4DAAEBB2230BFFC0069E388 /* ExtensionDelegate.swift in Sources */,
 				B4DAAEB92230BFFC0069E388 /* InterfaceController.swift in Sources */,
+				B4E79367223E4B3200AD5326 /* KeychainSwiftDistrib.swift in Sources */,
 				B4E71BCB223A385600766E13 /* TransactionTableRow.swift in Sources */,
 				B4E71B652238B83B00766E13 /* Wallet.swift in Sources */,
 				B4E71B2322378C6200766E13 /* ReceiveInterfaceController.swift in Sources */,
-				B4E792C0223E4AAA00AD5326 /* KeychainSwiftDistrib.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2687,7 +2683,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = D89BA22E6FDB6D85F69FF54B /* Pods-BlueWalletWatch Extension.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -2718,7 +2713,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 95DCC7F2130B7126DBFB47C5 /* Pods-BlueWalletWatch Extension.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
