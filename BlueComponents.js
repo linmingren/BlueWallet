@@ -32,7 +32,8 @@ import ImagePicker from 'react-native-image-picker';
 import WalletGradient from './class/walletGradient';
 const dayjs = require('dayjs');
 const LocalQRCode = require('@remobile/react-native-qrcode-local-image');
-let loc = require('./loc/');
+const loc = require('./loc/');
+const currency = require('./currency');
 /** @type {AppStorage} */
 let BlueApp = require('./BlueApp');
 const { height, width } = Dimensions.get('window');
@@ -1811,11 +1812,9 @@ export class BlueBitcoinAmount extends Component {
           </View>
           <View style={{ alignItems: 'center', marginBottom: 22, marginTop: 4 }}>
             <Text style={{ fontSize: 18, color: '#d4d4d4', fontWeight: '600' }}>
-              {loc.formatBalance(
-                this.props.unit === BitcoinUnit.BTC ? amount || 0 : loc.formatBalanceWithoutSuffix(amount || 0, BitcoinUnit.BTC, false),
-                BitcoinUnit.LOCAL_CURRENCY,
-                false,
-              )}
+              {this.props.unit === BitcoinUnit.BTC
+                ? currency.BTCToLocalCurrency(amount || 0)
+                : loc.formatBalance(amount || 0, BitcoinUnit.LOCAL_CURRENCY, false)}
             </Text>
           </View>
         </View>
