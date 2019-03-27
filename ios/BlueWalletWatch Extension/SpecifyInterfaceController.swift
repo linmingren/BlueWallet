@@ -20,7 +20,7 @@ class SpecifyInterfaceController: WKInterfaceController {
     var description: String?
     var amountStringArray: [String] = ["0"]
   }
-  var specifiedQRContent: SpecificQRCodeContent = SpecificQRCodeContent(amount: nil, description: nil)
+  var specifiedQRContent: SpecificQRCodeContent = SpecificQRCodeContent(amount: nil, description: nil, amountStringArray: ["0"])
   
   struct NotificationName {
     static let createQRCode = Notification.Name(rawValue: "Notification.SpecifyInterfaceController.createQRCode")
