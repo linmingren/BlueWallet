@@ -5,7 +5,6 @@
 	};
 	objectVersion = 46;
 	objects = {
-
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -14,7 +13,6 @@
 		00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302E41ABCB9EE00DB3ED1 /* libRCTVibration.a */; };
 		00E356F31AD99517003FC87E /* BlueWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* BlueWalletTests.m */; };
 		01AB943FA0794E91B65F0BFE /* libRCTPrivacySnapshot.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FC63C7054F1C4FDFB7A830E5 /* libRCTPrivacySnapshot.a */; };
-		02DEC1C9F61B405E8E357B2E /* libRCTWKWebView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E7078D2FED444DA4B0BD57F9 /* libRCTWKWebView.a */; };
 		034FE828CEF14A6CBCF9073E /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8637D4B5E14D443A9031DA95 /* libRNFS.a */; };
 		0AF37AC0E67044038B49FB3B /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 4D746BBE67E84684848246E2 /* SimpleLineIcons.ttf */; };
 		0B2C4EBFB4CB4960AAD777BC /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 44BC9E3EE0E9476A830CCCB9 /* Entypo.ttf */; };
@@ -513,13 +511,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNCWebView;
 		};
-		B40FE6DC21FAD7A8005D5578 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E7173EC6B95B4981AD3D4C70 /* RCTWKWebView.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0974579A1D2A440A000D9368;
-			remoteInfo = RCTWKWebView;
-		};
 		B4327EF221FC137D00F7ADFA /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 1A03CFBC35DD4AC28FA4A619 /* RNImagePicker.xcodeproj */;
@@ -718,8 +709,6 @@
 		D89BA22E6FDB6D85F69FF54B /* Pods-BlueWalletWatch Extension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BlueWalletWatch Extension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BlueWalletWatch Extension/Pods-BlueWalletWatch Extension.debug.xcconfig"; sourceTree = "<group>"; };
 		E432C66239704518B4C8719B /* RCTGoogleAnalyticsBridge.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTGoogleAnalyticsBridge.xcodeproj; path = "../node_modules/react-native-google-analytics-bridge/ios/RCTGoogleAnalyticsBridge/RCTGoogleAnalyticsBridge.xcodeproj"; sourceTree = "<group>"; };
 		E6B44173A8854B6D85D7F933 /* libRNVectorIcons-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNVectorIcons-tvOS.a"; sourceTree = "<group>"; };
-		E7078D2FED444DA4B0BD57F9 /* libRCTWKWebView.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTWKWebView.a; sourceTree = "<group>"; };
-		E7173EC6B95B4981AD3D4C70 /* RCTWKWebView.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTWKWebView.xcodeproj; path = "../node_modules/react-native-wkwebview-reborn/ios/RCTWKWebView.xcodeproj"; sourceTree = "<group>"; };
 		E8E8CE89B3D142C6A8A56C34 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		EAEF0F27730C4742B0F3AB99 /* RNRate.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNRate.xcodeproj; path = "../node_modules/react-native-rate/ios/RNRate.xcodeproj"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -785,7 +774,6 @@
 				C70F52A820614622A16EAF23 /* libRNSentry.a in Frameworks */,
 				6D9E44529B3C463AB9E6CA39 /* libRNVectorIcons.a in Frameworks */,
 				1FE70B15FB724CE3927C7541 /* libRNSVG.a in Frameworks */,
-				02DEC1C9F61B405E8E357B2E /* libRCTWKWebView.a in Frameworks */,
 				A6E5EEC7A4B54F5A9C9D92FC /* libRNImagePicker.a in Frameworks */,
 				C1056BF235EE4E23AAF21975 /* libRCTQRCodeLocalImage.a in Frameworks */,
 				34582CAA4AD140F7B80C961A /* libTcpSockets.a in Frameworks */,
@@ -1011,7 +999,6 @@
 				9EA3788F4C6643B7B0182587 /* RNVectorIcons.xcodeproj */,
 				3BC85BBCB16D42A4BAC73161 /* RNSVG.xcodeproj */,
 				2509F6D4DBD14FECBAD3EAC6 /* RNCWebView.xcodeproj */,
-				E7173EC6B95B4981AD3D4C70 /* RCTWKWebView.xcodeproj */,
 				1A03CFBC35DD4AC28FA4A619 /* RNImagePicker.xcodeproj */,
 				7EA61BC8FF6E4AD2A67F1557 /* RCTQRCodeLocalImage.xcodeproj */,
 				910283A2A9EB4D00902DE78E /* TcpSockets.xcodeproj */,
@@ -1227,14 +1214,6 @@
 			isa = PBXGroup;
 			children = (
 				B40FE68321FAD78F005D5578 /* libRNCWebView.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		B40FE6D921FAD7A7005D5578 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				B40FE6DD21FAD7A8005D5578 /* libRCTWKWebView.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1519,10 +1498,6 @@
 				{
 					ProductGroup = 139FDEE71B06529A00C62182 /* Products */;
 					ProjectRef = 139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */;
-				},
-				{
-					ProductGroup = B40FE6D921FAD7A7005D5578 /* Products */;
-					ProjectRef = E7173EC6B95B4981AD3D4C70 /* RCTWKWebView.xcodeproj */;
 				},
 				{
 					ProductGroup = 146834001AC3E56700842450 /* Products */;
@@ -2017,13 +1992,6 @@
 			remoteRef = B40FE68221FAD78F005D5578 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		B40FE6DD21FAD7A8005D5578 /* libRCTWKWebView.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRCTWKWebView.a;
-			remoteRef = B40FE6DC21FAD7A8005D5578 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		B4327EF321FC137D00F7ADFA /* libRNImagePicker.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -2353,7 +2321,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-webview/ios",
-					"$(SRCROOT)/../node_modules/react-native-wkwebview-reborn/ios/RCTWKWebView",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/@remobile/react-native-qrcode-local-image/ios/RCTQRCodeLocalImage",
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
@@ -2366,10 +2333,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2404,7 +2367,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-webview/ios",
-					"$(SRCROOT)/../node_modules/react-native-wkwebview-reborn/ios/RCTWKWebView",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/@remobile/react-native-qrcode-local-image/ios/RCTQRCodeLocalImage",
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
@@ -2417,10 +2379,6 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -2456,7 +2414,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-webview/ios",
-					"$(SRCROOT)/../node_modules/react-native-wkwebview-reborn/ios/RCTWKWebView",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/@remobile/react-native-qrcode-local-image/ios/RCTQRCodeLocalImage",
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
@@ -2502,7 +2459,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-svg/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-webview/ios",
-					"$(SRCROOT)/../node_modules/react-native-wkwebview-reborn/ios/RCTWKWebView",
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/@remobile/react-native-qrcode-local-image/ios/RCTQRCodeLocalImage",
 					"$(SRCROOT)/../node_modules/react-native-tcp/ios/**",
@@ -2644,7 +2600,6 @@
 				INFOPLIST_FILE = BlueWalletWatch/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -2681,7 +2636,6 @@
 				INFOPLIST_FILE = BlueWalletWatch/Info.plist;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = io.bluewallet.bluewallet.watch;
